@@ -15,6 +15,32 @@ class LouisbonnafousPlayer extends Player
     protected $opponentSide;
     protected $result;
 
+    public function getWinningMove($move) {
+        if ($move == 'rock') {
+            return 'paper';
+        }
+        if ($move == 'paper') {
+            return 'scissors';
+        }
+        if ($move == 'scissors') {
+            return 'rock';
+        }
+        return 'rock';
+    }
+
+    public function getLosingMove($move) {
+        if ($move == 'rock') {
+            return 'scissors';
+        }
+        if ($move == 'scissors') {
+            return 'paper';
+        }
+        if ($move == 'paper') {
+            return 'rock';
+        }
+        return 'paper';
+    }
+
     public function getChoice()
     {
         // -------------------------------------    -----------------------------------------------------
@@ -42,16 +68,17 @@ class LouisbonnafousPlayer extends Player
         // -------------------------------------    -----------------------------------------------------
         $lastEnemyChoice = $this->result->getLastChoiceFor($this->opponentSide);
         //$allEnemyChoices = $this->result->getChoicesFor($this->opponentSide);
-        $lastOpponentScore = $this->result->getLastScoreFor($this->opponentSide);
-        if ($lastEnemyChoice == 'rock') {
-            return parent::paperChoice();
+        $lastEnemyScore = $this->result->getLastScoreFor($this->opponentSide);
+
+        $mynextmove = 'rock';
+
+        if ($lastEnemyScore == 3) { // Enemi a gagné avant
+            $mynextmove = $this->getWinningMove($lastEnemyChoice);
+        } else if ($lastEnemyScore == 1) { // Enemi a fait nul avant
+            $mynextmove = $this->getLosingMove($lastEnemyChoice);
+        } else if ($lastEnemyChoice != 0) { // Enemi a perdu avant
+            $mynextmove = $lastEnemyChoice;
         }
-        if ($lastEnemyChoice == 'paper') {
-            return parent::scissorsChoice();
-        }
-        if ($lastEnemyChoice == 'scissors') {
-            return parent::rockChoice();
-        }
-        return parent::rockChoice();           
+        return $mynextmove;           
   }
 };
