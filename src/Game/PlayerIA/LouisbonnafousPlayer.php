@@ -4,12 +4,12 @@ namespace Hackathon\PlayerIA;
 use Hackathon\Game\Result;
 
 /**
- * Class LouisBonnafousPlayer
+ * Class LouisbonnafousPlayer
  * @package Hackathon\PlayerIA
  * @author Robin
  *
  */
-class LouisBonnafousPlayer extends Player
+class LouisbonnafousPlayer extends Player
 {
     protected $mySide;
     protected $opponentSide;
@@ -41,6 +41,8 @@ class LouisBonnafousPlayer extends Player
         // How can i display the result of each round ? $this->prettyDisplay()
         // -------------------------------------    -----------------------------------------------------
         $lastEnemyChoice = $this->result->getLastChoiceFor($this->opponentSide);
+        //$allEnemyChoices = $this->result->getChoicesFor($this->opponentSide);
+        $lastOpponentScore = $this->result->getLastScoreFor($this->opponentSide);
         if ($lastEnemyChoice == 'rock') {
             return parent::paperChoice();
         }
