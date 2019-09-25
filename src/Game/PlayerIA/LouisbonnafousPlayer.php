@@ -15,9 +15,6 @@ class LouisbonnafousPlayer extends Player
     protected $opponentSide;
     protected $result;
 
-    protected $myPreviousChoice;
-    protected $enemyPreviousChoice;
-
     public function getWinningMove($move) {
         if ($move == 'rock') {
             return 'paper';
@@ -74,19 +71,19 @@ class LouisbonnafousPlayer extends Player
         $lastEnemyScore = $this->result->getLastScoreFor($this->opponentSide);
         $enemyStats = $this->result->getStatsFor($this->opponentSide);
         
-        //$allEnemyChoices = $this->result->getChoicesFor($this->opponentSide);
-        
         $mynextmove = 'rock';
 
-        if ($this->result->getNbRound() > 300) {
-            if ($lastEnemyScore == 3) { // Enemi a gagné avant
+        // Change strategies every 4 rounds to confuse the ennemy
+        if ($this->result->getNbRound() % 4 == 0) {
+            if ($lastEnemyScore == 3) { 
                 $mynextmove = $lastEnemyChoice;;
             } else if ($lastEnemyScore == 1) { // Enemi a fait nul avant
                 $mynextmove = $this->getWinningMove($lastEnemyChoice);
             } else if ($lastEnemyChoice != 0) { // Enemi a perdu avant
                 $mynextmove = $this->getLosingMove($lastEnemyChoice);
             }   
-        } else {
+        } else { 
+            // Standard strategy
             if ($lastEnemyScore == 3) { // Enemi a gagné avant
                 $mynextmove = $this->getWinningMove($lastEnemyChoice);
             } else if ($lastEnemyScore == 1) { // Enemi a fait nul avant
@@ -95,8 +92,6 @@ class LouisbonnafousPlayer extends Player
                 $mynextmove = $lastEnemyChoice;
             }   
         }
-        //$myPreviousChoice = $myLastChoice;
-        //$enemyPreviousChoice = $lastEnemyChoice;
         return $mynextmove;           
   }
 };
