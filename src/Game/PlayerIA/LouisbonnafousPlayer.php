@@ -15,6 +15,9 @@ class LouisbonnafousPlayer extends Player
     protected $opponentSide;
     protected $result;
 
+    protected $myPreviousChoice;
+    protected $enemyPreviousChoice;
+
     public function getWinningMove($move) {
         if ($move == 'rock') {
             return 'paper';
@@ -66,19 +69,34 @@ class LouisbonnafousPlayer extends Player
         // -------------------------------------    -----------------------------------------------------
         // How can i display the result of each round ? $this->prettyDisplay()
         // -------------------------------------    -----------------------------------------------------
+        $myLastChoice = $this->result->getLastChoiceFor($this->mySide);
         $lastEnemyChoice = $this->result->getLastChoiceFor($this->opponentSide);
-        //$allEnemyChoices = $this->result->getChoicesFor($this->opponentSide);
         $lastEnemyScore = $this->result->getLastScoreFor($this->opponentSide);
-
+        $enemyStats = $this->result->getStatsFor($this->opponentSide);
+        
+        //$allEnemyChoices = $this->result->getChoicesFor($this->opponentSide);
+        
         $mynextmove = 'rock';
 
-        if ($lastEnemyScore == 3) { // Enemi a gagné avant
-            $mynextmove = $this->getWinningMove($lastEnemyChoice);
-        } else if ($lastEnemyScore == 1) { // Enemi a fait nul avant
-            $mynextmove = $this->getLosingMove($lastEnemyChoice);
-        } else if ($lastEnemyChoice != 0) { // Enemi a perdu avant
-            $mynextmove = $lastEnemyChoice;
+        if ($this->result->getNbRound() > 300) {
+            if ($lastEnemyScore == 3) { // Enemi a gagné avant
+                $mynextmove = $lastEnemyChoice;;
+            } else if ($lastEnemyScore == 1) { // Enemi a fait nul avant
+                $mynextmove = $this->getWinningMove($lastEnemyChoice);
+            } else if ($lastEnemyChoice != 0) { // Enemi a perdu avant
+                $mynextmove = $this->getLosingMove($lastEnemyChoice);
+            }   
+        } else {
+            if ($lastEnemyScore == 3) { // Enemi a gagné avant
+                $mynextmove = $this->getWinningMove($lastEnemyChoice);
+            } else if ($lastEnemyScore == 1) { // Enemi a fait nul avant
+                $mynextmove = $this->getLosingMove($lastEnemyChoice);
+            } else if ($lastEnemyChoice != 0) { // Enemi a perdu avant
+                $mynextmove = $lastEnemyChoice;
+            }   
         }
+        //$myPreviousChoice = $myLastChoice;
+        //$enemyPreviousChoice = $lastEnemyChoice;
         return $mynextmove;           
   }
 };
