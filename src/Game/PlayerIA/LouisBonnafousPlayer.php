@@ -40,7 +40,16 @@ class LouisBonnafousPlayer extends Player
         // -------------------------------------    -----------------------------------------------------
         // How can i display the result of each round ? $this->prettyDisplay()
         // -------------------------------------    -----------------------------------------------------
-        
-        return parent::paperChoice();            
+        $lastEnemyChoice = $this->result->getLastChoiceFor($this->opponentSide);
+        if ($lastEnemyChoice == 'rock') {
+            return parent::paperChoice();
+        }
+        if ($lastEnemyChoice == 'paper') {
+            return parent::scissorsChoice();
+        }
+        if ($lastEnemyChoice == 'scissors') {
+            return parent::rockChoice();
+        }
+        return parent::rockChoice();           
   }
 };
